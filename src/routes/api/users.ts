@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import { Router, Request, Response } from "express";
 import { default as bcrypt } from "bcryptjs";
 import gravatar from "gravatar";
 import { default as jwt } from "jsonwebtoken";
@@ -10,7 +10,7 @@ import { validateRegisterInput } from '../../validation/register';
 import { validateLoginInput } from "../../validation/login";
 
 
-const router = express.Router();
+const router = Router();
 
 // @route   GET api/users/test
 // @action  tests users route
