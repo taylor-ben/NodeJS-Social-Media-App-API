@@ -106,7 +106,9 @@ router.post("/login", (req: Request, res: Response) => {
   });
 });
 
-// @desc return current user
+// @route   GET api/users/current
+// @action  Return current user
+// @access  Private
 router.get('/current', passport.authenticate('jwt', {session: false}), (req: Request, res: Response) => {
   req.user.hashedPassword = undefined;
   res.json(req.user);
