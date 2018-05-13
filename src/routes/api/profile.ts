@@ -82,12 +82,17 @@ router.get('/', passport.authenticate('jwt', {session: false}), (req: Request, r
           .then(profile => res.json(profile));
       } else {
         // Create
+
+        // Check if handle exists
         Profile.findOne({ handle: profileFields.handle })
           .then(profile => {
             if (profile) {
               errors.handle = 'That handle already exists';
               res.status(400).json(errors);
             }
+
+            // Save profile
+            new Profile(profileFields).save().then(profile => res.json(profile));
           })
       }
     })
