@@ -54,4 +54,34 @@ export interface Profile {
   location?: string;
   bio?: string;
   githubusername?: string;
+  experience?: [
+    {
+      title: string,
+      company: string,
+      location: string,
+      from: Date,
+      to?: Date,
+      current: false,
+      description?: string,
+    }
+  ],
+  education?: [
+    {
+      school: string,
+      degree: string,
+      fieldofstudy: string,
+      from: Date,
+      to?: Date,
+      current: false,
+      description?: string
+    }
+  ],
+  social?: {
+    youtube?: string,
+    twitter?: string,
+    facebook?: string,
+    linkedin?: string,
+    instagram?: string
+  },
+  date?: Date
 }
