@@ -46,9 +46,9 @@ const ProfileSchema = new Schema({
 export const Profile = mongoose.model('profile', ProfileSchema);
 export interface Profile {
   user?: string;
-  handle: string;
-  status: string;
-  skills: string[];
+  handle?: string;
+  status?: string;
+  skills?: string[] | string;
   company?: string;
   website?: string;
   location?: string;
@@ -84,4 +84,11 @@ export interface Profile {
     instagram?: string
   },
   date?: Date
+}
+
+export interface ProfileErrors {
+  noProfile?: string;
+  handle?: string;
+  status?: string;
+  skills?: string;
 }

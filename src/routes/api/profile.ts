@@ -3,17 +3,10 @@ import { Router, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import passport from 'passport';
 
-import { Profile } from './../../models/Profile';
+import { Profile, ProfileErrors } from './../../models/Profile';
 import { User } from '../../models/User';
 
 const router = Router();
-
-interface ProfileErrors {
-  noProfile?: string;
-  handle?: string;
-  status?: string;
-  skills?: string;
-}
 
 // @route   GET api/profile/test
 // @action  tests profile route
@@ -41,12 +34,6 @@ router.get('/', passport.authenticate('jwt', {session: false}), (req: Request, r
 // @action  Create profile
 // @access  Private
 router.get('/', passport.authenticate('jwt', {session: false}), (req: Request, res: Response) => {
-  const errors: ProfileErrors = {};
-
-  if (!req.body.handle) errors.handle = 'Handle field is required';
-  if (!req.body.status) errors.status = 'Status field is required';
-  if (!req.body.skills) errors.skills = 'Skills field is required';
-  if (!isEmpty(errors)) return res.status(400).json(errors);
 
   // get fields
   const profileFields: Profile = {
