@@ -4,18 +4,15 @@ import { Input } from '../models/Form';
 import { isEmpty } from './is-empty';
 export function validateExperienceInput(input: ExperienceInput) {
   
-  const errors: ExperienceInput = {
-    title: 'x',
-    from: new Date()
-  };
+  const errors: ExperienceInput = {};
 
-  input.email = isEmpty(input.email) ? '' : input.email;
-  input.password = isEmpty(input.password) ? '' : input.password;
+  input.title = isEmpty(input.title) ? '' : input.title;
+  input.from = isEmpty(input.from) ? '' : input.from;
+  input.countriesVisited = isEmpty(input.countriesVisited) ? '' : input.countriesVisited;
 
-  if (!Validator.isEmail(input.email)) errors.email = 'Email is invalid';
-
-  if (Validator.isEmpty(input.email)) errors.email = 'Email field is required';
-  if (Validator.isEmpty(input.password)) errors.password = 'Password field is required';
+  if (Validator.isEmpty(input.title)) errors.title = 'Title field is required';
+  if (Validator.isEmpty(input.from)) errors.from = 'From date field is required';
+  if (Validator.isEmpty(input.countriesVisited)) errors.countriesVisited = 'Countries visited field is required';
   
   return {
     errors,

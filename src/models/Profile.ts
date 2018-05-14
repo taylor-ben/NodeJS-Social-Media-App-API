@@ -62,14 +62,18 @@ export interface Profile {
 export interface ExperienceInput  {
   title?: string;
   description?: string;
-  from?: Date;
-  to?: Date;
+  from?: string;
+  to?: string;
   current?: boolean;
-  countriesVisited?: string[] | string;
+  countriesVisited?: string;
 }
-export interface Experience extends ExperienceInput {
+export interface Experience {
   title: string;
+  description?: string;
   from: Date;
+  to?: Date
+  current?: boolean;
+  countriesVisited: string[];
 }
 export interface Education {
   school: string;

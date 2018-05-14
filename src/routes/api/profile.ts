@@ -6,6 +6,7 @@ import { isEmpty } from './../../validation/is-empty';
 import { Profile, Experience, MongooseProfile } from './../../models/Profile';
 import { User } from '../../models/User';
 import { validateProfileInput } from '../../validation/profile';
+import { validateExperienceInput } from '../../validation/experience';
 
 const router = Router();
 
@@ -155,6 +156,12 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req: Request, 
 // @action  Add experience to profile
 // @access  Private
 router.post('/experience', passport.authenticate('jwt', {session: false}), (req: Request, res: Response) => {
+
+  const { errors, isValid } = validateExperienceInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   Profile.findOne({user: req.user.id})
     .then((profile: MongooseProfile) => {
       const newExperience: Experience = {
