@@ -9,7 +9,7 @@ const ProfileSchema = new Schema({
   website: {type: String,},
   location: {type: String,},
   status: {type: String, required: true},
-  countriesVisited: {type: [String]},
+  countriesVisited: {type: [String], unique: true},
   bio: {type: String,},
   githubusername: {type: String,},
   experience: [
@@ -42,7 +42,7 @@ export interface Profile {
   location?: string;
   bio?: string;
   githubusername?: string;
-  countriesVisited?: string[] | string;
+  countriesVisited?: Array<string>;
   experience?: Experience[];
   social?: SocialLinks;
   date?: Date;

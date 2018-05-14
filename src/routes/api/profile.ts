@@ -103,9 +103,12 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req: Request, 
     user: req.user.id,
     handle: req.body.handle,
     status: req.body.status,
-    countriesVisited: req.body.countriesVisited.split(' ').join('').split(','),
     social: {}
   };
+
+  if (req.body.countriesVisited) {
+    profileFields.countriesVisited = Array.from(new Set(req.body.countriesVisited.split(' ').join('').split(',')));
+  }
 
   if (req.body.currentCountry) profileFields.currentCountry = req.body.currentCountry;
   if (req.body.website) profileFields.website = req.body.website;
@@ -164,14 +167,17 @@ router.post('/experience', passport.authenticate('jwt', {session: false}), (req:
 
   Profile.findOne({user: req.user.id})
     .then((profile: MongooseProfile) => {
+      const countriesVisited = req.body.countriesVisited.split(' ').join('').split(',');
+      const { title, description, from, to, current } = req.body;
       const newExperience: Experience = {
-        title: req.body.title,
-        description: req.body.description,
-        from: req.body.from,
-        to: req.body.to,
-        current: req.body.current,
-        countriesVisited: req.body.countriesVisited.split(' ').join('').split(','),
+        title, description, from, to, current, countriesVisited
       };
+
+      if (req.body.countriesVisited) {
+        profile.countriesVisited = profile.countriesVisited.concat(countriesVisited)
+        profile.countriesVisited = Array.from(new Set(profile.countriesVisited));
+      }
+
   
       profile.experience.unshift(newExperience);
       profile.save().then((profile: MongooseProfile) => res.json(profile))
