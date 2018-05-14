@@ -9,7 +9,7 @@ const ProfileSchema = new Schema({
   website: {type: String,},
   location: {type: String,},
   status: {type: String, required: true},
-  countriesVisited: {type: [String], required: true},
+  countriesVisited: {type: [String]},
   bio: {type: String,},
   githubusername: {type: String,},
   experience: [
@@ -20,17 +20,6 @@ const ProfileSchema = new Schema({
       to: {type: Date},
       current: {type: Boolean, default: false},
       countriesVisited: {type: [String], required: true},
-    }
-  ],
-  education: [
-    {
-      school: {type: String, required: true},
-      degree: {type: String, required: true},
-      fieldofstudy: {type: String, required: true},
-      from: {type: Date, required: true},
-      to: {type: Date},
-      current: {type: Boolean,default: false},
-      description: {type: String},
     }
   ],
   social: {
@@ -55,7 +44,6 @@ export interface Profile {
   githubusername?: string;
   countriesVisited?: string[] | string;
   experience?: Experience[];
-  education?: Education[];
   social?: SocialLinks;
   date?: Date;
 }
@@ -74,15 +62,7 @@ export interface Experience {
   to?: Date
   current?: boolean;
   countriesVisited: string[];
-}
-export interface Education {
-  school: string;
-  degree: string;
-  fieldofstudy: string;
-  from: Date;
-  to?: Date;
-  current?: boolean;
-  description?: string;
+  id?: string;
 }
 export interface SocialLinks {
   youtube?: string;

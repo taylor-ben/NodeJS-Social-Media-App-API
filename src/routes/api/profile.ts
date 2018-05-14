@@ -177,5 +177,37 @@ router.post('/experience', passport.authenticate('jwt', {session: false}), (req:
       profile.save().then((profile: MongooseProfile) => res.json(profile))
     })
 });
+// @route   DELETE api/profile/experience/:exp_id
+// @action  Delete experience
+// @access  Private
+router.delete('/experience/:exp_id', passport.authenticate('jwt', {session: false}), (req: Request, res: Response) => {
+
+  Profile.findOne({user: req.user.id})
+    .then((profile: MongooseProfile) => {
+  
+      const removeIndex = profile.experience
+        .findIndex((exp: Experience) => exp.id == req.params.exp_id);
+
+      if (removeIndex > -1) {
+        profile.experience.splice(removeIndex, 1);
+      } else {
+        return res.status(404).json({experience: 'Experience not found'})
+      } 
+
+      profile.save().then((profile: MongooseProfile) => res.json(profile))
+    })
+});
+// @route   DELETE api/profile/
+// @action  Delete user and profile
+// @access  Private
+router.delete('/', passport.authenticate('jwt', {session: false}), (req: Request, res: Response) => {
+  Profile.findOneAndRemove({user: req.user.id})
+    .then(() => {
+      User.findByIdAndRemove({ _id: req.user.id })
+        .then(() => res.json({success: true}))
+        .catch(err => res.status(404).json(err));
+    })
+    .catch(err => res.status(404).json(err));
+});
 
 export default router;

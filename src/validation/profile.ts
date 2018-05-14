@@ -6,7 +6,6 @@ export function validateProfileInput(input: Profile) {
   
   input.handle = isEmpty(input.handle) ? '' : input.handle;
   input.status = isEmpty(input.status) ? '' : input.status;
-  input.countriesVisited = isEmpty(input.countriesVisited) ? '' : input.countriesVisited;
   
   const errors: Profile = {};
 
@@ -35,7 +34,6 @@ export function validateProfileInput(input: Profile) {
 
   if (Validator.isEmpty(input.handle)) errors.handle = 'Profile handle field is required';
   if (Validator.isEmpty(input.status)) errors.status = 'Status field is required';
-  if (isEmpty(input.countriesVisited)) errors.countriesVisited = 'countriesVisited field is required';
   
   return {
     errors,
