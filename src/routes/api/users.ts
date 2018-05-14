@@ -4,7 +4,7 @@ import gravatar from "gravatar";
 import { default as jwt } from "jsonwebtoken";
 import passport from 'passport';
 
-import { User } from "../../models/User";
+import { User, MongooseUser } from "../../models/User";
 import { secretOrKey } from './../../config/keys';
 import { validateRegisterInput } from '../../validation/register';
 import { validateLoginInput } from "../../validation/login";
@@ -29,7 +29,7 @@ router.post("/register", (req: Request, res: Response) => {
     return res.status(400).json(errors);
   }
 
-  User.findOne({ email: req.body.email }).then(user => {
+  User.findOne({ email: req.body.email }).then((user: MongooseUser) => {
     if (user) {
       errors.email = "Email already exists";
       return res.status(400).json(errors);
@@ -40,7 +40,7 @@ router.post("/register", (req: Request, res: Response) => {
         d: "mm" // default
       });
 
-      const user = {
+      const user: User = {
         name: req.body.name,
         email: req.body.email,
         hashedPassword: "",
@@ -55,8 +55,8 @@ router.post("/register", (req: Request, res: Response) => {
         });
       });
 
-      function generateUser(user: object) {
-        const newUser = new User(user);
+      function generateUser(user: User) {
+        const newUser: MongooseUser = Object.assign(new User(user), user);
         newUser
           .save()
           .then(() => res.json(newUser))
@@ -77,7 +77,7 @@ router.post("/login", (req: Request, res: Response) => {
   }
 
   const { email, password } = req.body;
-  User.findOne({email}, (err, user: User) => {
+  User.findOne({email}, (err, user: MongooseUser) => {
     if (!user) {
       errors.email = 'User not found'
       return res.status(404).json(errors);

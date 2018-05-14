@@ -29,6 +29,9 @@ export interface User {
   email: string;
   hashedPassword?: string;
   avatar?: string;
-  date: Date;
-  id?: string;
+  date?: Date;
+}
+
+export interface MongooseUser extends User, mongoose.Document {
+
 }

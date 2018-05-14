@@ -5,22 +5,21 @@ const Schema = mongoose.Schema;
 const ProfileSchema = new Schema({
   user: {type: Schema.Types.ObjectId,ref: 'users'},
   handle: {type: String, required: true, max: 40},
-  company: {type: String,},
+  currentCountry: {type: String,},
   website: {type: String,},
   location: {type: String,},
   status: {type: String, required: true},
-  skills: {type: [String], required: true},
+  countriesVisited: {type: [String], required: true},
   bio: {type: String,},
   githubusername: {type: String,},
   experience: [
     {
       title: {type: String, required: true},
-      company: {type: String, required: true},
-      location: {type: String, required: true},
+      description: {type: String},
       from: {type: Date, required: true},
       to: {type: Date},
       current: {type: Boolean, default: false},
-      description: {type: String},
+      countriesVisited: {type: [String], required: true},
     }
   ],
   education: [
@@ -45,50 +44,51 @@ const ProfileSchema = new Schema({
 });
 export const Profile = mongoose.model('profile', ProfileSchema);
 export interface Profile {
+  noProfile?: string;
   user?: string;
   handle?: string;
   status?: string;
-  skills?: string[] | string;
-  company?: string;
+  currentCountry?: string;
   website?: string;
   location?: string;
   bio?: string;
   githubusername?: string;
-  experience?: [
-    {
-      title: string,
-      company: string,
-      location: string,
-      from: Date,
-      to?: Date,
-      current: false,
-      description?: string,
-    }
-  ],
-  education?: [
-    {
-      school: string,
-      degree: string,
-      fieldofstudy: string,
-      from: Date,
-      to?: Date,
-      current: false,
-      description?: string
-    }
-  ],
-  social?: {
-    youtube?: string,
-    twitter?: string,
-    facebook?: string,
-    linkedin?: string,
-    instagram?: string
-  },
-  date?: Date
+  countriesVisited?: string[] | string;
+  experience?: Experience[];
+  education?: Education[];
+  social?: SocialLinks;
+  date?: Date;
+}
+export interface ExperienceInput  {
+  title?: string;
+  description?: string;
+  from?: Date;
+  to?: Date;
+  current?: boolean;
+  countriesVisited?: string[] | string;
+}
+export interface Experience extends ExperienceInput {
+  title: string;
+  from: Date;
+}
+export interface Education {
+  school: string;
+  degree: string;
+  fieldofstudy: string;
+  from: Date;
+  to?: Date;
+  current?: boolean;
+  description?: string;
+}
+export interface SocialLinks {
+  youtube?: string;
+  twitter?: string;
+  facebook?: string;
+  linkedin?: string;
+  instagram?: string;
 }
 
-export interface ProfileErrors {
-  noProfile?: string;
-  handle?: string;
-  status?: string;
-  skills?: string;
+export interface MongooseProfile extends Profile, mongoose.Document {
+  
 }
+
