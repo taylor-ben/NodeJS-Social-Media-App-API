@@ -1,9 +1,9 @@
 import Validator from 'validator';
-import { Input } from '../models/Form';
+import { RegisterInput } from '../models/Form';
 import { isEmpty } from './is-empty';
-export function validateLoginInput(input: Input) {
+export function validateLoginInput(input: RegisterInput) {
   
-  const errors: Input = {};
+  const errors: RegisterInput = {};
 
   input.email = isEmpty(input.email) ? '' : input.email;
   input.password = isEmpty(input.password) ? '' : input.password;

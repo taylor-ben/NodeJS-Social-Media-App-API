@@ -1,9 +1,9 @@
 import Validator from 'validator';
-import { Input } from '../models/Form';
+import { RegisterInput } from '../models/Form';
 import { isEmpty } from './is-empty';
-export function validateRegisterInput(input: Input) {
+export function validateRegisterInput(input: RegisterInput) {
   
-  const errors: Input = {};
+  const errors: RegisterInput = {};
 
   input.name = isEmpty(input.name) ? '' : input.name;
   input.email = isEmpty(input.email) ? '' : input.email;

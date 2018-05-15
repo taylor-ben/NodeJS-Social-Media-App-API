@@ -3,19 +3,22 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const PostSchema = new Schema({
-  user: {type: Schema.Types.ObjectId,ref: 'users'},
+  owner: {type: Schema.Types.ObjectId,ref: 'users'},
   text: {type: String, required: true},
   name: {type: String},
   avatar: {type: String},
   date: {type: Date, default: Date.now},
   likes: [
     {
-      user: {type: Schema.Types.ObjectId,ref: 'users'}
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+      }
     }
   ],
   comments: [
     {
-      user: {type: Schema.Types.ObjectId,ref: 'users'},
+      owner: {type: Schema.Types.ObjectId,ref: 'users'},
       text: {type: String, required: true},
       name: {type: String},
       avatar: {type: String},
@@ -25,17 +28,20 @@ const PostSchema = new Schema({
 
 
 });
-export const Post = mongoose.model('post', PostSchema);
+export const Post = mongoose.model('posts', PostSchema);
 export interface Post extends _Comment {
-  likes: string[];
+  likes: UserRef[];
   comments: _Comment[];
 }
 export interface _Comment {
-  user: string;
+  owner: string;
   text: string;
   name?: string;
   avatar?: string;
   date?: Date;
+}
+interface UserRef {
+  user: string
 }
 
 export interface MongoosePost extends Post, mongoose.Document {

@@ -1,6 +1,6 @@
-import { Experience, ExperienceInput } from './../models/Profile';
+import { Experience } from './../models/Profile';
 import Validator from 'validator';
-import { Input } from '../models/Form';
+import { ExperienceInput } from '../models/Form';
 import { isEmpty } from './is-empty';
 export function validateExperienceInput(input: ExperienceInput) {
   

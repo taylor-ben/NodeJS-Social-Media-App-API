@@ -11,3 +11,16 @@ export interface Input {
   password?: string;
   password2?: string;
 }
+
+export interface ExperienceInput  {
+  title?: string;
+  description?: string;
+  from?: string;
+  to?: string;
+  current?: boolean;
+  countriesVisited?: string;
+}
+
+export interface PostForm {
+  text?: string;
+}
