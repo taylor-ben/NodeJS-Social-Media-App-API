@@ -1,5 +1,15 @@
 {
     "compilerOptions": {
+        "lib": ["es6", "dom"],
+        "allowJs": true,
+        "jsx": "react",
+        "rootDir": "src",
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": true,
         "module": "commonjs",
         "esModuleInterop": true,
         "target": "es6",
@@ -13,9 +23,19 @@
                 "node_modules/*",
                 "src/types/*"
             ]
-        }
+        },
     },
     "include": [
         "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "build",
+        "dist",
+        "scripts",
+        "acceptance-tests",
+        "webpack",
+        "jest",
+        "src/setupTests.ts"
     ]
 }
