@@ -42,12 +42,5 @@
         "no-null-keyword": true,
         "prefer-const": true,
         "jsdoc-format": true
-    },
-    "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
-    "linterOptions": {
-        "exclude": [
-        "config/**/*.js",
-        "node_modules/**/*.ts"
-        ]
     }
 }
