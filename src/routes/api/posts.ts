@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import passport from 'passport';
 
-import { Post, MongoosePost } from './../../models/Post';
+import { Post, MongoosePost, _Comment } from './../../models/Post';
 import { validatePostInput } from '../../validation/posts';
 
 const router = Router();
@@ -22,14 +22,15 @@ router.post('/', passport.authenticate('jwt', {session: false}), (req: Request, 
     return res.status(400).json(errors);
   }
 
-  const newPost = new Post({
-    user: req.user.id,
+  const newPost: _Comment = {
+    owner: req.user.id,
     name: req.user.name,
     avatar: req.user.avatar,
     text: req.body.text
-  });
+  }
+  const mongoosePost = new Post(newPost);
 
-  newPost.save()
+  mongoosePost.save()
     .then((post: MongoosePost) => res.json(post))
     .catch(err => res.status(404).json(err))
 });
@@ -112,5 +113,58 @@ router.delete('/like/:post_id', passport.authenticate('jwt', {session: false}), 
     })
     .catch(err => res.status(404).json({noPost: 'No post found with that ID'}));
 });
+
+// @route   POST api/posts/comment/:post_id
+// @action  Comment on a post
+// @access  Private
+router.post('/comment/:post_id', passport.authenticate('jwt', {session: false}), (req: Request, res: Response) => {
+  
+  const { errors, isValid } = validatePostInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  Post.findById(req.params.post_id)
+    .then((post: MongoosePost) => {
+
+      const newComment: _Comment = {
+        owner: req.user.id,
+        name: req.user.name,
+        avatar: req.user.avatar,
+        text: req.body.text
+      }
+      post.comments.push(newComment);
+      post.save().then(() => res.json({success: true}))
+        .catch(err => res.json(err));
+    })
+    .catch(err => res.status(404).json({noPost: 'No post found with that ID'}));
+});
+
+// @route   DELETE api/posts/comment/:post_id/:comment_id
+// @action  Delete a comment
+// @access  Private
+router.delete('/comment/:post_id/:comment_id', passport.authenticate('jwt', {session: false}), (req: Request, res: Response) => {
+
+  Post.findById(req.params.post_id)
+    .then((post: MongoosePost) => {
+
+      const commentIndex = post.comments.findIndex((comment: MongoosePost) => comment.id == req.params.comment_id);
+
+      if (commentIndex == -1) {
+        return res.status(404).json({noComment: 'No comment found with that ID'});
+      }
+
+      const commentToDelete = post.comments[commentIndex];
+      if (commentToDelete.owner == req.user.id) {
+        post.comments.splice(commentIndex);
+        post.save().then(() => res.json({success: true}))
+          .catch(err => res.json(err));
+      } else {
+        res.status(401).json({notOwner: 'User is not the owner of this comment'})
+      }
+    })
+    .catch(err => res.status(404).json({noPost: 'No post found with that ID'}));
+});
+
 
 export default router;
